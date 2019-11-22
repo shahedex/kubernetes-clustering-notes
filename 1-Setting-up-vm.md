@@ -77,4 +77,3 @@ EOF
 # apply the configuration
 $ sysctl --system
 ```
-
