@@ -1,5 +1,11 @@
 # Setting up Centos VM for Kubernetes
 
+## Changing own hostname
+
+```console
+$ hostnamectl set-hostname newhostname
+```
+
 ## Set hostname for master and workers
 
 ```console
