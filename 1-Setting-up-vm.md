@@ -25,9 +25,21 @@ $ systemctl enable docker
 $ systemctl start docker
 ```
 
-## Disable SELinux
+## Check docker status 
+
+```console
+$ systemctl status docker
+```
+
+## Disable SELinux (temporary)
 
 ```console
 $ setenforce 0
+```
+
+## Permanently disable SELinux
+
+```console
+$ sed -i --follow-symlinks 's/^SELINUX=enforcing/SELINUX=disabled/' /etc/sysconfig/selinux
 ```
 
