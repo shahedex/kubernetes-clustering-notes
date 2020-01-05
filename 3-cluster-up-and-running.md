@@ -29,6 +29,17 @@ $ kubectl apply -f https://github.com/coreos/flannel/raw/master/Documentation/ku
 $ kubectl create -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel-rbac.yml
 ```
 
+## For any errors on CNI
+"cni0" already has an IP address different from 10.244.2.1/24。 
+
+Error while adding to cni network: failed to allocate for range 0: no IP addresses available in range set: 10.244.2.1-10.244.2.254
+
+  - rm -rf /var/lib/cni/flannel/* && rm -rf /var/lib/cni/networks/cbr0/* && ip link delete cni0  
+  - rm -rf /var/lib/cni/networks/cni0/*
+  - kubeadm reset
+  - kubeadm join
+
+  
 ## For Calico
 ### Initialize Kubernetes cluster with the pod network
 
@@ -56,6 +67,13 @@ $ kubectl create -f https://docs.projectcalico.org/v3.9/manifests/calico.yaml
 $ kubeadm token create --print-join-command
 ```
 
+## Tainting the Host
+If you want to run workloads on master node
+
+```console
+$ kubectl taint nodes --all node-role.kubernetes.io/master-
+```
+
 ## On Worker node
 
 ### Run the Cluster join command
@@ -81,11 +99,4 @@ $ kubectl get nodes -o wide
 
 ```console
 $ kubectl cluster-info
-```
-
-## Tainting the Host
-If you want to run workloads on master node
-
-```console
-$ kubectl taint nodes --all node-role.kubernetes.io/master-
 ```
