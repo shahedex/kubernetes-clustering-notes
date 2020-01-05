@@ -2,6 +2,34 @@
 
 ## On Master node
 
+## For Flannel Network
+### Initialize Kubernetes cluster with the pod network CIDR
+
+```console
+$ sudo kubeadm init --pod-network-cidr=10.244.0.0/16
+```
+
+### Run the commands using regular user to copy kubeconfig to use the cluster
+
+```console
+  mkdir -p $HOME/.kube
+  sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+  sudo chown $(id -u):$(id -g) $HOME/.kube/config
+```
+
+### Deploy Fannel network for worker node communication
+
+```console
+$ kubectl apply -f https://github.com/coreos/flannel/raw/master/Documentation/kube-flannel.yml
+```
+
+### If there is any Error or CrashLoopBackOff - Run RBAC module
+
+```console
+$ kubectl create -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel-rbac.yml
+```
+
+## For Calico
 ### Initialize Kubernetes cluster with the pod network
 
 ```console
@@ -53,4 +81,11 @@ $ kubectl get nodes -o wide
 
 ```console
 $ kubectl cluster-info
+```
+
+## Tainting the Host
+If you want to run workloads on master node
+
+```console
+$ kubectl taint nodes --all node-role.kubernetes.io/master-
 ```
